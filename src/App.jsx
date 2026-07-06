@@ -8,6 +8,9 @@ import Proveedores from './pages/compras/Proveedores';
 import OrdenesCompra from './pages/compras/OrdenesCompra';
 import StockBajo from './pages/almacen/StockBajo';
 import Clientes from './pages/ventas/Clientes';
+import Ventas from './pages/ventas/Ventas';
+import Membresias from './pages/socios/Membresias';
+import Planes from './pages/socios/Planes';
 
 // Vistas temporales (Aquí luego irán tus verdaderos componentes)
 const VistaGenerica = ({ titulo }) => (
@@ -31,8 +34,9 @@ function App() {
             
             {/* Secciones del Menú Lateral */}
             <Route path="catalogo" element={<VistaGenerica titulo="Gestión de Catálogo Web" />} />
-            <Route path="ventas" element={<VistaGenerica titulo="Ventas Físicas (POS)" />} />
-            <Route path="membresias" element={<VistaGenerica titulo="Control de Membresías" />} />
+            <Route path="ventas" element={<Ventas />} />
+            <Route path="membresias" element={<Membresias />} />
+            <Route path="planes" element={<Planes />} />
             <Route path="pedidos" element={<VistaGenerica titulo="Pedidos Web (E-commerce)" />} />
             <Route path="clientes" element={<Clientes />} />
             <Route path="entrenamientos" element={<VistaGenerica titulo="Asignación de Rutinas" />} />         

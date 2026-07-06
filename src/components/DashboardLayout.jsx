@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Activity, LayoutDashboard, Store, ShoppingCart, CreditCard, 
   ShoppingBag, Users, Dumbbell, FileText, Truck, Package, 
-  AlertTriangle, UserCog, LogOut 
+  AlertTriangle, UserCog, LogOut, ClipboardList
 } from 'lucide-react';
 import { logoutAPI } from '../services/authService';
 
@@ -27,9 +27,15 @@ export default function DashboardLayout() {
       title: 'VENTAS',
       items: [
         { name: 'Ventas', icon: ShoppingCart, path: '/dashboard/ventas' },
-        { name: 'Membresías', icon: CreditCard, path: '/dashboard/membresias' },
-        { name: 'Pedidos', icon: ShoppingBag, path: '/dashboard/pedidos' },
+        { name: 'Pedidos Web', icon: ShoppingBag, path: '/dashboard/pedidos' }
+      ]
+    },
+    {
+      title: 'SOCIOS',
+      items: [
         { name: 'Clientes', icon: Users, path: '/dashboard/clientes' },
+        { name: 'Membresías', icon: CreditCard, path: '/dashboard/membresias' },
+        { name: 'Planes', icon: ClipboardList, path: '/dashboard/planes' },
         { name: 'Entrenamientos', icon: Dumbbell, path: '/dashboard/entrenamientos' }
       ]
     },
@@ -77,7 +83,6 @@ export default function DashboardLayout() {
                 </div>
               )}
               
-              {/* Alineación estricta a px-4 */}
               <nav className="px-4 space-y-1">
                 {group.items.map((item) => {
                   const Icon = item.icon;
