@@ -17,7 +17,13 @@ export const asignarMembresia = async (data) => {
     headers: getAuthHeaders(),
     body: JSON.stringify(data),
   });
-  if (!response.ok) throw new Error('Error al asignar la membresía');
+  
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => null);
+    // Aquí atrapa el mensaje que pusimos en el backend y lo lanza al frontend
+    throw new Error(errorData?.message || 'Error al asignar la membresía');
+  }
+  
   return await response.json();
 };
 

@@ -11,6 +11,10 @@ import Clientes from './pages/ventas/Clientes';
 import Ventas from './pages/ventas/Ventas';
 import Membresias from './pages/socios/Membresias';
 import Planes from './pages/socios/Planes';
+import Entrenamientos from './pages/socios/Entrenamientos';
+import Ejercicios from './pages/socios/Ejercicios';
+import Usuarios from './pages/seguridad/Usuarios';
+import TiendaVirtual from './pages/web/TiendaVirtual';
 
 // Vistas temporales (Aquí luego irán tus verdaderos componentes)
 const VistaGenerica = ({ titulo }) => (
@@ -25,6 +29,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/login" element={<Login />} />
+
+        <Route path="/" element={<TiendaVirtual />} />
         
         {/* Rutas Protegidas (Requieren Token) */}
         <Route element={<ProtectedRoute />}>
@@ -39,13 +45,14 @@ function App() {
             <Route path="planes" element={<Planes />} />
             <Route path="pedidos" element={<VistaGenerica titulo="Pedidos Web (E-commerce)" />} />
             <Route path="clientes" element={<Clientes />} />
-            <Route path="entrenamientos" element={<VistaGenerica titulo="Asignación de Rutinas" />} />         
+            <Route path="entrenamientos" element={<Entrenamientos />} />
+            <Route path="ejercicios" element={<Ejercicios />} />        
             <Route path="ordenes" element={<OrdenesCompra />} />
             <Route path="proveedores" element={<Proveedores />} />
             <Route path="productos" element={<Productos />} />
             <Route path="categorias" element={<Categorias />} />
             <Route path="stock-bajo" element={<StockBajo />} />
-            <Route path="usuarios" element={<VistaGenerica titulo="Usuarios y Accesos del Sistema" />} />
+            <Route path="usuarios" element={<Usuarios />} />
           </Route>
         </Route>
 
