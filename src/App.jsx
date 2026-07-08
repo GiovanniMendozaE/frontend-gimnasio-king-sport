@@ -15,6 +15,7 @@ import Entrenamientos from './pages/socios/Entrenamientos';
 import Ejercicios from './pages/socios/Ejercicios';
 import Usuarios from './pages/seguridad/Usuarios';
 import TiendaVirtual from './pages/web/TiendaVirtual';
+import PedidosWeb from './pages/admin/PedidosWeb';
 
 // Vistas temporales (Aquí luego irán tus verdaderos componentes)
 const VistaGenerica = ({ titulo }) => (
@@ -43,7 +44,7 @@ function App() {
             <Route path="ventas" element={<Ventas />} />
             <Route path="membresias" element={<Membresias />} />
             <Route path="planes" element={<Planes />} />
-            <Route path="pedidos" element={<VistaGenerica titulo="Pedidos Web (E-commerce)" />} />
+            <Route path="pedidos" element={<PedidosWeb />} />
             <Route path="clientes" element={<Clientes />} />
             <Route path="entrenamientos" element={<Entrenamientos />} />
             <Route path="ejercicios" element={<Ejercicios />} />        

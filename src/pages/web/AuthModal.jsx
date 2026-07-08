@@ -1,19 +1,16 @@
 import { useState } from 'react';
 import { X, Mail, Lock, User, Phone, CreditCard, Loader2 } from 'lucide-react';
-import { registrarCliente } from '../../services/web/authWebService'; // Lo crearemos en el paso 2
+import { registrarCliente } from '../../services/web/authWebService'; 
 
 export default function AuthModal({ onClose, onLoginSuccess }) {
   const [esRegistro, setEsRegistro] = useState(false);
   const [cargando, setCargando] = useState(false);
 
-  // Estados del formulario
   const [formData, setFormData] = useState({
     email: '', password: '', documento: '', nombreCompleto: '', telefono: ''
   });
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,20 +18,20 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
 
     try {
       if (esRegistro) {
-        // FLUJO DE REGISTRO
         const respuesta = await registrarCliente(formData);
         alert(respuesta.mensaje);
-        setEsRegistro(false); // Lo pasamos a la pestaña de login automáticamente
+        setEsRegistro(false); 
       } else {
-        // FLUJO DE LOGIN (Simulado por ahora hasta conectar tu AuthController)
-        // Aquí llamaremos a tu API de Login real
+        // SIMULACIÓN MEJORADA: Extraemos un nombre más limpio o usamos uno por defecto
+        const nombreLimpio = formData.email.split('@')[0].split('.')[0];
+        const nombreCapitalizado = nombreLimpio.charAt(0).toUpperCase() + nombreLimpio.slice(1);
+
         const usuarioSimulado = {
-          id: 1, // Este ID vendrá de la base de datos real
-          nombre: formData.email.split('@')[0],
+          id: 1, 
+          nombre: nombreCapitalizado, // Ahora dirá "Hola, Giovanni"
           email: formData.email,
           rol: 'CLIENTE'
         };
-        
         onLoginSuccess(usuarioSimulado);
       }
     } catch (error) {
@@ -47,76 +44,43 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4">
       <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose}></div>
-      
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-md w-full overflow-hidden animate-fade-in">
         <div className="flex justify-between items-center p-6 border-b border-gray-100 bg-gray-50">
-          <h2 className="text-xl font-black text-gym-dark uppercase">
-            {esRegistro ? 'Crea tu Cuenta' : 'Inicia Sesión'}
-          </h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-red-500 transition-colors">
-            <X className="h-6 w-6" />
-          </button>
+          <h2 className="text-xl font-black text-gym-dark uppercase">{esRegistro ? 'Crea tu Cuenta' : 'Inicia Sesión'}</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-red-500 transition-colors"><X className="h-6 w-6" /></button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          
           {esRegistro && (
             <>
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Documento (DNI/CE)</label>
-                <div className="relative">
-                  <CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input required name="documento" value={formData.documento} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" />
-                </div>
+                <div className="relative"><CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="documento" value={formData.documento} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Completo</label>
-                <div className="relative">
-                  <User className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input required name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} type="text" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" />
-                </div>
+                <div className="relative"><User className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} type="text" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
               </div>
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Teléfono</label>
-                <div className="relative">
-                  <Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-                  <input required name="telefono" value={formData.telefono} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" />
-                </div>
+                <div className="relative"><Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="telefono" value={formData.telefono} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
               </div>
             </>
           )}
-
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Correo Electrónico</label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-              <input required name="email" value={formData.email} onChange={handleChange} type="email" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" />
-            </div>
+            <div className="relative"><Mail className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="email" value={formData.email} onChange={handleChange} type="email" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
           </div>
-          
           <div>
             <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Contraseña</label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
-              <input required name="password" value={formData.password} onChange={handleChange} type="password" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" />
-            </div>
+            <div className="relative"><Lock className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="password" value={formData.password} onChange={handleChange} type="password" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
           </div>
-
-          <button 
-            type="submit" 
-            disabled={cargando}
-            className="w-full py-4 mt-2 bg-gym-yellow hover:bg-yellow-500 text-gym-dark font-black text-sm uppercase rounded-xl transition-colors flex justify-center items-center"
-          >
+          <button type="submit" disabled={cargando} className="w-full py-4 mt-2 bg-gym-yellow hover:bg-yellow-500 text-gym-dark font-black text-sm uppercase rounded-xl transition-colors flex justify-center items-center">
             {cargando ? <Loader2 className="animate-spin h-5 w-5" /> : (esRegistro ? 'Registrarme' : 'Ingresar y Pagar')}
           </button>
         </form>
-
         <div className="p-4 bg-gray-50 border-t border-gray-100 text-center">
-          <button 
-            type="button" 
-            onClick={() => setEsRegistro(!esRegistro)}
-            className="text-xs font-bold text-gray-500 hover:text-gym-dark transition-colors uppercase"
-          >
+          <button type="button" onClick={() => setEsRegistro(!esRegistro)} className="text-xs font-bold text-gray-500 hover:text-gym-dark transition-colors uppercase">
             {esRegistro ? '¿Ya tienes cuenta? Inicia Sesión' : '¿Eres nuevo? Crea tu cuenta'}
           </button>
         </div>

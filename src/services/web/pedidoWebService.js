@@ -16,3 +16,8 @@ export const procesarPedido = async (pedidoData) => {
 
   return await response.json();
 };
+export const obtenerHistorialPedidos = async (clienteId) => {
+  const response = await fetch(`http://localhost:8081/api/v1/web/pedidos/historial/${clienteId}`);
+  if (!response.ok) throw new Error("Error al obtener el historial");
+  return await response.json();
+};
