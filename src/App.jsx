@@ -16,6 +16,8 @@ import Ejercicios from './pages/socios/Ejercicios';
 import Usuarios from './pages/seguridad/Usuarios';
 import TiendaVirtual from './pages/web/TiendaVirtual';
 import PedidosWeb from './pages/admin/PedidosWeb';
+import CatalogoWeb from './pages/admin/CatalogoWeb';
+import Dashboard from './pages/admin/Dashboard';
 
 // Vistas temporales (Aquí luego irán tus verdaderos componentes)
 const VistaGenerica = ({ titulo }) => (
@@ -37,10 +39,10 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<DashboardLayout />}>
             {/* Pantalla principal del Dashboard (Las tarjetas e indicadores irán aquí) */}
-            <Route index element={<VistaGenerica titulo="Dashboard Principal (KPIs y Gráficos)" />} />
+            <Route index element={<Dashboard />} />
             
             {/* Secciones del Menú Lateral */}
-            <Route path="catalogo" element={<VistaGenerica titulo="Gestión de Catálogo Web" />} />
+            <Route path="catalogo" element={<CatalogoWeb />} />
             <Route path="ventas" element={<Ventas />} />
             <Route path="membresias" element={<Membresias />} />
             <Route path="planes" element={<Planes />} />

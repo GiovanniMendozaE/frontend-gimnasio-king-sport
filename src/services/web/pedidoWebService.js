@@ -21,3 +21,15 @@ export const obtenerHistorialPedidos = async (clienteId) => {
   if (!response.ok) throw new Error("Error al obtener el historial");
   return await response.json();
 };
+
+export const obtenerHistorialCliente = async (clienteId) => {
+  const response = await fetch(`${API_URL}/historial/${clienteId}`, {
+    headers: { 'Content-Type': 'application/json' }
+    // Si usas token JWT, agrégalo aquí: 'Authorization': `Bearer ${localStorage.getItem('gym_token')}`
+  });
+  
+  if (!response.ok) {
+    throw new Error('Error al obtener el historial');
+  }
+  return await response.json();
+};

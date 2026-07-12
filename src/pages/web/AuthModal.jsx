@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { X, Mail, Lock, User, Phone, CreditCard, Loader2 } from 'lucide-react';
-import { registrarCliente } from '../../services/web/authWebService'; 
+import { registrarCliente, loginCliente } from '../../services/web/authWebService'; 
 
 export default function AuthModal({ onClose, onLoginSuccess }) {
   const [esRegistro, setEsRegistro] = useState(false);
   const [cargando, setCargando] = useState(false);
 
+  // AHORA EL ESTADO TIENE NOMBRE Y APELLIDO SEPARADOS
   const [formData, setFormData] = useState({
-    email: '', password: '', documento: '', nombreCompleto: '', telefono: ''
+    email: '', password: '', documento: '', nombre: '', apellido: '', telefono: ''
   });
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -22,17 +23,19 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
         alert(respuesta.mensaje);
         setEsRegistro(false); 
       } else {
-        // SIMULACIÓN MEJORADA: Extraemos un nombre más limpio o usamos uno por defecto
-        const nombreLimpio = formData.email.split('@')[0].split('.')[0];
-        const nombreCapitalizado = nombreLimpio.charAt(0).toUpperCase() + nombreLimpio.slice(1);
-
-        const usuarioSimulado = {
-          id: 1, 
-          nombre: nombreCapitalizado, // Ahora dirá "Hola, Giovanni"
+        const credenciales = {
           email: formData.email,
-          rol: 'CLIENTE'
+          password: formData.password
         };
-        onLoginSuccess(usuarioSimulado);
+        
+        const clienteBD = await loginCliente(credenciales);
+        
+        onLoginSuccess({
+          id: clienteBD.id,
+          nombre: clienteBD.nombreCompleto, 
+          email: clienteBD.email,
+          rol: 'CLIENTE'
+        });
       }
     } catch (error) {
       alert("Error: " + error.message);
@@ -57,10 +60,19 @@ export default function AuthModal({ onClose, onLoginSuccess }) {
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Documento (DNI/CE)</label>
                 <div className="relative"><CreditCard className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="documento" value={formData.documento} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre Completo</label>
-                <div className="relative"><User className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} type="text" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
+              
+              {/* CAMPOS SEPARADOS DE NOMBRE Y APELLIDO */}
+              <div className="flex gap-4">
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Nombre</label>
+                  <div className="relative"><User className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="nombre" value={formData.nombre} onChange={handleChange} type="text" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
+                </div>
+                <div className="flex-1">
+                  <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Apellido</label>
+                  <div className="relative"><User className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="apellido" value={formData.apellido} onChange={handleChange} type="text" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
+                </div>
               </div>
+
               <div>
                 <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Teléfono</label>
                 <div className="relative"><Phone className="absolute left-3 top-3 h-5 w-5 text-gray-400" /><input required name="telefono" value={formData.telefono} onChange={handleChange} type="text" maxLength="15" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-none focus:border-gym-yellow focus:ring-1 focus:ring-gym-yellow" /></div>
